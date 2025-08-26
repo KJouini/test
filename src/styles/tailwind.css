@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+/* 🎨 change ici ta couleur “primary” */
+@theme {
+  /* ancien: #2563eb (blue-600) */
+  --color-primary: #10b981; /* emerald-500 par ex. */
+}
+
+/* garde ton composant utilitaire */
+@layer components {
+  .tw-btn {
+    @apply px-4 py-2 rounded text-white bg-primary hover:opacity-90;
+  }
+}
