@@ -18,7 +18,12 @@ export default {
     commonjs(),
     postcss({
       plugins: [
-        postcssUrl({ url: 'inline' }), // ⬅️ inline les SVG
+      postcssUrl({
+        filter: '**/*.{woff2,woff,ttf,otf,svg,png,jpg,jpeg,gif}',
+        url: 'copy',
+        useHash: true,
+        assetsPath: 'assets', // => dist/assets/*
+      }),
         tailwind(),
         autoprefixer(),
       ],

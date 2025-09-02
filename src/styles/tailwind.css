@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "./fonts.css";
 
 /* =========
    THEME
@@ -18,7 +19,8 @@
   --color-border: #e5e7eb;
 
   /* Typo */
-  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --font-sans: "Roboto Condensed", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+               
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 
   /* Rayon / Ombres */
@@ -128,8 +130,8 @@
     -webkit-mask-size: contain;     mask-size: contain;
   }
 
-  .icon-home   { -webkit-mask-image: url("../icons/home.svg");   mask-image: url("../icons/home.svg"); }
-  .icon-search { -webkit-mask-image: url("../icons/search.svg"); mask-image: url("../icons/search.svg"); }
+  .icon-home   { -webkit-mask-image: url("../assets/icons/home.svg");   mask-image: url("../assets/icons/home.svg"); }
+  .icon-search { -webkit-mask-image: url("../assets/icons/search.svg"); mask-image: url("../assets/icons/search.svg"); }
 
   /* Helpers de taille basés sur text-* (optionnels) */
   .icon-sm { @apply text-sm; }
