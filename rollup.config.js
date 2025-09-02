@@ -1,59 +1,52 @@
-import path from 'node:path';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
-import url from '@rollup/plugin-url';            // ⬅️ NEW
 import esbuild from 'rollup-plugin-esbuild';
 import postcss from 'rollup-plugin-postcss';
 import tailwind from '@tailwindcss/postcss';
 import autoprefixer from 'autoprefixer';
 import postcssUrl from 'postcss-url';
-
-const dist = path.resolve('dist');
+import url from '@rollup/plugin-url'; // ✅ pour importer PNG/JPG/SVG depuis le JS
 
 export default {
   input: 'src/index.js',
-  external: ['react', 'react-dom'],
+  external: ['react', 'react-dom'], // ta lib reste agnostique
   output: [
-    { file: path.join(dist, 'index.esm.js'), format: 'esm', sourcemap: true },
-    { file: path.join(dist, 'index.cjs.js'), format: 'cjs', sourcemap: true },
+    { file: 'dist/index.esm.js', format: 'esm', sourcemap: true },
+    { file: 'dist/index.cjs.js', format: 'cjs', sourcemap: true }
   ],
   plugins: [
     resolve({ extensions: ['.js', '.jsx'] }),
     commonjs(),
 
-    // ⬇️ Images importées depuis le JS (png/jpg/svg/webp/gif)
+    // ✅ Gère les imports d'images depuis le code JS/JSX (ex: import img from './foo.png')
     url({
-      include: ['**/*.png', '**/*.jpg', '**/*.jpeg', '**/*.gif', '**/*.webp', '**/*.svg'],
-      limit: 0, // jamais inline; toujours copier dans dist/assets
-      fileName: 'assets/[name]-[hash][extname]',
+      include: ['**/*.png', '**/*.jpg', '**/*.jpeg', '**/*.gif', '**/*.svg'],
+      limit: 0, // 0 = toujours copier (pas inline)
+      fileName: 'assets/[name]-[hash][extname]' // sort dans dist/assets
     }),
 
-    // CSS (Tailwind v4) + réécriture/copîe des url() de CSS (fonts, svg…)
+    // ✅ Gère Tailwind + copie/rewriting des URL(…) dans ton CSS (fonts, svg…)
     postcss({
-      extract: path.join(dist, 'styles.css'),
-      minimize: true,
-      sourceMap: true,
       plugins: [
         tailwind(),
-        // 1) Inline tout petits assets (ex: minuscules SVG)
-        postcssUrl({ url: 'inline', maxSize: 4 }), // Ko
-
-        // 2) Copie le reste vers dist/assets et réécrit les URL -> assets/<hash>.<ext>
         postcssUrl({
+          // copie chaque fichier référencé par url(…) dans le CSS
           url: 'copy',
-          useHash: true,
-          assetsPath: path.join(dist, 'assets'),
-          basePath: path.resolve('src'), // les url('../assets/...') depuis src/styles => src/assets/...
+          assetsPath: 'dist/assets',  // destination sur disque
+          useHash: true,              // nom de fichier hashé
+          publicPath: 'assets'        // réécriture dans le CSS -> url("assets/xxx.ext")
         }),
-
-        autoprefixer(),
+        autoprefixer()
       ],
+      extract: 'styles.css',      // génère dist/styles.css
+      minimize: true,
+      sourceMap: false
     }),
 
     esbuild({
       include: /\.[jt]sx?$/,
-      jsx: 'automatic',
-      target: 'es2018',
-    }),
-  ],
+      jsx: 'automatic', // React 17+
+      target: 'es2018'
+    })
+  ]
 };
