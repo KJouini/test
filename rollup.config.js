@@ -1,3 +1,4 @@
+// rollup.config.js
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import esbuild from 'rollup-plugin-esbuild';
@@ -9,48 +10,35 @@ import url from '@rollup/plugin-url';
 
 export default {
   input: 'src/index.js',
+  // 👇 très important : externalise aussi le sous-module jsx-runtime
   external: (id) =>
     id === 'react' ||
     id === 'react-dom' ||
-    id === 'react/jsx-runtime' || id.startsWith('react/jsx-runtime'),
+    id === 'react/jsx-runtime' || // <-- ajoute ceci
+    id.startsWith('react/jsx-runtime'),
   output: [
     { file: 'dist/index.esm.js', format: 'esm', sourcemap: true },
-    { file: 'dist/index.cjs.js', format: 'cjs', sourcemap: true }
+    { file: 'dist/index.cjs.js', format: 'cjs', sourcemap: true },
   ],
   plugins: [
     resolve({ extensions: ['.js', '.jsx'] }),
-    // (optionnel) si tu importes des images/ttf directement dans du JS/JSX
     url({
       include: [
-        '**/*.png','**/*.jpg','**/*.jpeg','**/*.gif','**/*.webp','**/*.svg',
-        '**/*.ttf','**/*.otf','**/*.woff','**/*.woff2'
+        '**/*.png', '**/*.jpg', '**/*.jpeg', '**/*.gif', '**/*.webp', '**/*.svg',
+        '**/*.ttf', '**/*.otf', '**/*.woff', '**/*.woff2'
       ],
       limit: 0,
       fileName: 'assets/[name]-[hash][extname]',
       emitFiles: true,
     }),
-    postcss({
-      extract: 'styles.css',
-      minimize: true,
-      plugins: [
-        tailwind(),
-        autoprefixer(),
-        // ⬇️ DOIT être en DERNIER pour réécrire toutes les url(...) finales
-        postcssUrl({
-          url: 'copy',          // copie chaque fichier référencé
-          assetsPath: 'assets', // vers dist/assets
-          useHash: true,        // ajoute un hash (évite les collisions cache)
-          // (facultatif) ignore http/data:
-          filter: (asset) => !/^(data:|https?:)/.test(asset.url),
-        }),
-      ],
-    }),
+    postcssUrl({ url: 'inline' }),
+    postcss({ plugins: [tailwind(), autoprefixer()], extract: 'styles.css', minimize: true }),
     esbuild({
       include: /\.[jt]sx?$/,
-      jsx: 'automatic',
+      jsx: 'automatic',        // JSX runtime moderne
       jsxImportSource: 'react',
       target: 'es2018',
     }),
     commonjs(),
-  ]
+  ],
 };
