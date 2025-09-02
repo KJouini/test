@@ -1,7 +1,7 @@
 import React from 'react';
 import Card from './Card';
-import Button from './Button';
-import Badge from './Badge';
+import Button from '../Button/Button';
+import Badge from '../Badge/Badge';
 
 export default {
   title: 'Components/Card',
