@@ -1,2 +1,9 @@
 import './styles/tailwind.css';           // déclenche la génération et l'extraction
-export * from './components';
+export { default as Button } from './components/Button.jsx';
+export { default as Card } from './components/Card.jsx';
+export { default as Badge } from './components/Badge.jsx';
+export { default as TextField } from './components/TextField.jsx';
+export { default as BrandTypography } from './components/BrandTypography.jsx';
+export { default as ImageCard } from './components/ImageCard.jsx';
+export { default as TailwindPlayground } from './components/TailwindPlayground.jsx';
+export { default as IconsGallery } from './components/IconsGallery.jsx';
