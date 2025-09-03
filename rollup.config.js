@@ -6,6 +6,7 @@ import tailwind from '@tailwindcss/postcss';
 import autoprefixer from 'autoprefixer';
 import postcssUrl from 'postcss-url';
 import url from '@rollup/plugin-url'; // ✅ pour importer PNG/JPG/SVG depuis le JS
+import font from "rollup-plugin-font";
 
 export default {
   input: 'src/index.js',
@@ -36,7 +37,8 @@ export default {
           useHash: true,              // nom de fichier hashé
           publicPath: 'assets'        // réécriture dans le CSS -> url("assets/xxx.ext")
         }),
-        autoprefixer()
+        autoprefixer(),
+        font()
       ],
       extract: 'styles.css',      // génère dist/styles.css
       minimize: true,
