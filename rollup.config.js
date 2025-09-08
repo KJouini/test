@@ -4,13 +4,13 @@ import esbuild from 'rollup-plugin-esbuild';
 import postcss from 'rollup-plugin-postcss';
 import tailwind from '@tailwindcss/postcss';
 import autoprefixer from 'autoprefixer';
-import postcssUrl from 'postcss-url';
 import url from '@rollup/plugin-url';
+import copy from 'rollup-plugin-copy';
 import del from 'rollup-plugin-delete';
 import { promises as fs } from 'node:fs';
 import { join } from 'node:path';
 
-// Sécurise le préfixe "./" pour CRA (au cas où postcss-url écrirait "assets/...").
+// Patch CRA-friendly: assure url(./assets/...) dans dist/styles.css
 function fixCssRelativeUrls() {
   return {
     name: 'fix-css-relative-urls',
@@ -33,38 +33,20 @@ export default {
     { file: 'dist/index.cjs.js', format: 'cjs', sourcemap: true }
   ],
   plugins: [
-    // Nettoyage systématique
     del({ targets: 'dist/*' }),
 
     resolve({ extensions: ['.js', '.jsx'] }),
     commonjs(),
     esbuild({ include: /\.[jt]sx?$/, jsx: 'automatic', target: 'es2018' }),
 
-    // CSS + Tailwind v4 + gestion d’assets via postcss-url (PAS de copy Rollup ici)
+    // CSS: Tailwind v4 + autoprefixer ; pas de postcss-url (on ne gère plus de fonts ici)
     postcss({
-      plugins: [
-        tailwind(),                    // Tailwind v4 PostCSS plugin
-        autoprefixer(),
-        // 1) Copier les FONTS vers dist/assets + réécrire les URLs
-        postcssUrl({
-          filter: '**/*.{woff2,woff,ttf,eot}',
-          url: 'copy',
-          basePath: 'src',            // nos URL CSS sont ./assets/... → résolues depuis "src"
-          assetsPath: 'assets',       // sortie relative à dist/styles.css → dist/assets/...
-          useHash: true
-        }),
-        // 2) Inliner les SVG d’icônes pour supprimer tout risque de chemin
-        postcssUrl({
-          filter: '**/*.svg',
-          url: 'inline'               // mask-image marche très bien en inline
-        })
-        // pas de 'rebase' ici pour éviter les concat bizarres vue précédemment
-      ],
+      plugins: [tailwind(), autoprefixer()],
       extract: 'styles.css',
       minimize: true
     }),
 
-    // Images importées depuis le JS (pas indispensables, mais safe)
+    // Actifs importés depuis le JS (images raster)
     url({
       include: ['**/*.png','**/*.jpg','**/*.jpeg','**/*.gif','**/*.webp'],
       limit: 0,
@@ -72,7 +54,17 @@ export default {
       fileName: '[name]-[hash][extname]'
     }),
 
-    // Patch CRA-friendly
+    // Copie **seulement** icônes/images de la lib → dist/assets
+    copy({
+      targets: [
+        { src: 'src/assets/icons/**/*',  dest: 'dist/assets/icons' },
+        { src: 'src/assets/images/**/*', dest: 'dist/assets/images' }
+      ],
+      hook: 'writeBundle',
+      overwrite: true,
+      flatten: false
+    }),
+
     fixCssRelativeUrls()
   ]
 };
