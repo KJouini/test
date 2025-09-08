@@ -1,48 +1,37 @@
 {
   "name": "rollup-tailwind-test",
-  "version": "1.1.18",
-  "description": "Librairie de composants React avec Tailwind CSS v4, Rollup et Storybook",
+  "version": "1.1.21",
+  "description": "Librairie de composants React avec Tailwind CSS v4, Rollup",
   "type": "module",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
   "style": "dist/styles.css",
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
+  "sideEffects": ["**/*.css"],
   "scripts": {
-    "build": "rollup -c",
-    "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build": "rollup -c"
   },
   "peerDependencies": {
-    "react": "^18.0.0 || ^19.0.0",
-    "react-dom": "^18.0.0 || ^19.0.0"
+    "react": ">=18",
+    "react-dom": ">=18"
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^28.0.6",
-    "@rollup/plugin-node-resolve": "^16.0.1",
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-node-resolve": "^15.3.0",
     "@rollup/plugin-url": "^8.0.2",
-    "@storybook/react-vite": "9.1.3",
     "@tailwindcss/postcss": "^4.1.12",
-    "@vitejs/plugin-react": "^4.7.0",
-    "autoprefixer": "^10.4.21",
-    "postcss": "^8.5.6",
+    "autoprefixer": "^10.4.20",
     "postcss-url": "^10.1.3",
-    "react": "^19.1.1",
-    "react-dom": "^19.1.1",
-    "rollup": "^4.0.0",
+    "rollup": "^4.21.0",
+    "rollup-plugin-copy": "^3.5.0",
+    "rollup-plugin-delete": "^2.0.0",
     "rollup-plugin-esbuild": "^6.2.1",
     "rollup-plugin-postcss": "^4.0.2",
-    "storybook": "9.1.3",
     "tailwindcss": "^4.1.12",
-    "vite": "^5.4.19"
+    "esbuild": "^0.21.5"
   },
   "license": "MIT",
-  "publishConfig": {
-    "access": "public"
-  },
-  "dependencies": {
-    "rollup-plugin-font": "^1.1.2"
-  }
+  "publishConfig": { "access": "public" },
+  "dependencies": {}
 }

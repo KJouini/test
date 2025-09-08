@@ -6,6 +6,31 @@ import postcssUrl from 'postcss-url';
 import tailwind from '@tailwindcss/postcss';
 import autoprefixer from 'autoprefixer';
 import url from '@rollup/plugin-url';
+import copy from 'rollup-plugin-copy';
+import del from 'rollup-plugin-delete';
+import { promises as fs } from 'node:fs';
+import { join } from 'node:path';
+
+/** Post-fix: force url(./assets/...) in dist/styles.css */
+function fixCssRelativeUrls() {
+  return {
+    name: 'fix-css-relative-urls',
+    async writeBundle() {
+      const cssPath = join('dist', 'styles.css');
+      try {
+        let css = await fs.readFile(cssPath, 'utf8');
+        // remplace url(assets/...) ou url('assets/...') ou url("assets/...")
+        css = css.replace(
+          /url\(\s*(['"]?)(?!data:|https?:|\/\/)(assets\/)/g,
+          'url($1./$2'
+        );
+        await fs.writeFile(cssPath, css, 'utf8');
+      } catch (e) {
+        this.warn(`[fix-css-relative-urls] skip (${e.message})`);
+      }
+    }
+  };
+}
 
 export default {
   input: 'src/index.js',
@@ -15,32 +40,41 @@ export default {
     { file: 'dist/index.cjs.js', format: 'cjs', sourcemap: true }
   ],
   plugins: [
+    // Clean dist à chaque build
+    del({ targets: 'dist/*' }),
+
     resolve({ extensions: ['.js', '.jsx'] }),
     commonjs(),
 
-    // Pour les imports d’images depuis le JS (ex: import img from './Orif.png')
+    // Assets importés depuis le JS (images uniquement)
     url({
-      include: ['**/*.png','**/*.jpg','**/*.jpeg','**/*.gif','**/*.svg','**/*.ttf','**/*.woff','**/*.woff2'],
-      limit: 0,                 // toujours copier (pas d’inline)
-      destDir: 'dist/assets',   // sortie des fichiers copiés
+      include: ['**/*.png','**/*.jpg','**/*.jpeg','**/*.gif','**/*.webp','**/*.svg'],
+      limit: 0,
+      destDir: 'dist/assets',
       fileName: '[name]-[hash][extname]'
     }),
 
-    // Pour les URL dans la CSS (fonts, svg d’icônes…), copie + réécriture
+    // CSS + Tailwind + tentative de rebase (on garde, mais on sécurise avec fixCssRelativeUrls)
     postcss({
       plugins: [
         tailwind(),
         autoprefixer(),
-        postcssUrl({
-          url: 'copy',
-          assetsPath: 'assets', // => dist/assets/
-          useHash: true
-        })
+        postcssUrl([{ url: 'rebase' }]) // l'ordre exact peut varier selon versions
       ],
       extract: 'styles.css',
       minimize: true
     }),
 
-    esbuild({ include: /\.[jt]sx?$/, jsx: 'automatic', target: 'es2018' })
+    esbuild({ include: /\.[jt]sx?$/, jsx: 'automatic', target: 'es2018' }),
+
+    // Copie brute des assets (fonts, icons, images) → dist/assets
+    // NOTE: src = dossier 'assets' (pas **/*) pour éviter dist/assets/assets/...
+    copy({
+      targets: [{ src: 'src/assets', dest: 'dist' }],
+      hook: 'writeBundle'
+    }),
+
+    // Patch final garantissant ./assets/... dans le CSS
+    fixCssRelativeUrls()
   ]
 };

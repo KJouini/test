@@ -1,47 +1,28 @@
-/* src/styles/fonts.css */
-@layer base {
-  /* 700 Bold */
-  @font-face {
-    font-family: "Roboto Condensed";
-    src: url("../assets/fonts/Roboto/Roboto_Condensed-Bold.ttf") format("truetype");
-    font-weight: 700;
-    font-style: normal;
-    font-display: swap;
-  }
-
-  /* 700 Bold Italic */
-  @font-face {
-    font-family: "Roboto Condensed";
-    src: url("../assets/fonts/Roboto/Roboto_Condensed-BoldItalic.ttf") format("truetype");
-    font-weight: 700;
-    font-style: italic;
-    font-display: swap;
-  }
-
-  /* 800 ExtraBold */
-  @font-face {
-    font-family: "Roboto Condensed";
-    src: url("../assets/fonts/Roboto/Roboto_Condensed-ExtraBold.ttf") format("truetype");
-    font-weight: 800;
-    font-style: normal;
-    font-display: swap;
-  }
-
-  /* 900 Black */
-  @font-face {
-    font-family: "Roboto Condensed";
-    src: url("../assets/fonts/Roboto/Roboto_Condensed-Black.ttf") format("truetype");
-    font-weight: 900;
-    font-style: normal;
-    font-display: swap;
-  }
-
-  /* 900 Black Italic */
-  @font-face {
-    font-family: "Roboto Condensed";
-    src: url("../assets/fonts/Roboto/Roboto_Condensed-BlackItalic.ttf") format("truetype");
-    font-weight: 900;
-    font-style: italic;
-    font-display: swap;
-  }
+@font-face {
+  font-family: "Roboto Condensed";
+  src: url("./assets/fonts/Roboto/Roboto_Condensed-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Roboto Condensed";
+  src: url("./assets/fonts/Roboto/Roboto_Condensed-Italic.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Roboto Condensed";
+  src: url("./assets/fonts/Roboto/Roboto_Condensed-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Roboto Condensed";
+  src: url("./assets/fonts/Roboto/Roboto_Condensed-BoldItalic.ttf") format("truetype");
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
 }
