@@ -89,8 +89,8 @@
 
 @layer utilities {
   .icon { display:inline-block; inline-size:1em; block-size:1em; vertical-align:-0.125em; background-color:currentColor; -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat; -webkit-mask-position:center; mask-position:center; -webkit-mask-size:contain; mask-size:contain; }
-  .icon-home   { -webkit-mask-image:url("./assets/icons/home.svg");   mask-image:url("./assets/icons/home.svg"); }
-  .icon-search { -webkit-mask-image:url("./assets/icons/search.svg"); mask-image:url("./assets/icons/search.svg"); }
+  .icon-home   { -webkit-mask-image: url("./assets/icons/home.svg");   mask-image: url("./assets/icons/home.svg"); }
+  .icon-search { -webkit-mask-image: url("./assets/icons/search.svg"); mask-image: url("./assets/icons/search.svg"); }
 
   .skeleton { @apply animate-pulse bg-muted-200 dark:bg-muted-800 rounded-md; }
   .shadow-card { @apply shadow-sm; }

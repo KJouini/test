@@ -37,8 +37,6 @@
   "license": "MIT",
   "publishConfig": {
     "access": "public"
-  },
-  "dependencies": {
-    "@fontsource/roboto-condensed": "^5.2.6"
+
   }
 }
