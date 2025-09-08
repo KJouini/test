@@ -1,4 +1,5 @@
 import './styles/tailwind.css';           // déclenche la génération et l'extraction
+import '@fontsource/roboto-condensed/400.css'; // police principale
 export { default as Button } from './components/Button/Button.jsx';
 export { default as Card } from './components/Card/Card.jsx';
 export { default as Badge } from './components/Badge/Badge.jsx';
