@@ -1,6 +1,6 @@
 {
   "name": "rollup-tailwind-test",
-  "version": "1.1.24",
+  "version": "1.1.25",
   "description": "Librairie de composants React avec Tailwind CSS v4, Rollup",
   "type": "module",
   "main": "dist/index.cjs.js",
@@ -14,7 +14,9 @@
     "**/*.css"
   ],
   "scripts": {
-    "build": "rollup -c"
+    "build": "rollup -c",
+    "clean": "rimraf dist src/styles/dist",
+    "prepack": "npm run clean && npm run build"
   },
   "peerDependencies": {
     "react": ">=18",
@@ -28,6 +30,7 @@
     "autoprefixer": "^10",
     "esbuild": "^0.21",
     "postcss-url": "^10",
+    "rimraf": "^6.0.1",
     "rollup": "^4",
     "rollup-plugin-copy": "^3.5.0",
     "rollup-plugin-delete": "^2",
@@ -37,6 +40,5 @@
   "license": "MIT",
   "publishConfig": {
     "access": "public"
-
   }
 }

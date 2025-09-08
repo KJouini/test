@@ -1,111 +1,75 @@
 @import "tailwindcss";
 
+/* ===== Thème minimal (tu peux étoffer après) ===== */
 @theme {
   --font-sans: "Roboto Condensed", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
     Roboto, "Noto Sans", Ubuntu, Cantarell, "Helvetica Neue", Arial, "Apple Color Emoji",
     "Segoe UI Emoji", "Segoe UI Symbol";
 
-  --color-brand-50:  #f5fbff;
-  --color-brand-100: #e6f5ff;
-  --color-brand-200: #cdeaff;
-  --color-brand-300: #9fd9ff;
-  --color-brand-400: #65c1ff;
-  --color-brand-500: #3aa8ff;
   --color-brand-600: #1f8fff;
   --color-brand-700: #1676e6;
-  --color-brand-800: #155fb4;
-  --color-brand-900: #144f8f;
-
-  --color-muted-50:  #f9fafb;
   --color-muted-100: #f3f4f6;
   --color-muted-200: #e5e7eb;
   --color-muted-300: #d1d5db;
-  --color-muted-400: #9ca3af;
-  --color-muted-500: #6b7280;
-  --color-muted-600: #4b5563;
   --color-muted-700: #374151;
   --color-muted-800: #1f2937;
-  --color-muted-900: #111827;
-
-  --color-success: #16a34a;
-  --color-warning: #f59e0b;
-  --color-danger:  #dc2626;
-
-  --radius: 0.75rem;
+  --color-danger: #dc2626;
 }
 
+/* ===== Base typographique ===== */
 @layer base {
-  :root { color-scheme: light; }
-  .dark { color-scheme: dark; }
   html, body, #root { @apply h-full; }
-  html { @apply antialiased; font-feature-settings: "cv02","cv03","cv04","cv11"; }
-  body { @apply bg-white text-muted-900 dark:bg-muted-900 dark:text-muted-100; font-family: var(--font-sans); }
-  ::selection { @apply bg-brand-200 text-muted-900; }
-  h1 { @apply scroll-m-20 text-4xl font-bold tracking-tight lg:text-5xl; }
-  h2 { @apply scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0; }
-  h3 { @apply scroll-m-20 text-2xl font-semibold tracking-tight; }
-  h4 { @apply scroll-m-20 text-xl font-semibold tracking-tight; }
-  p { @apply leading-7; }
-  a { @apply text-brand-700 hover:text-brand-800 underline-offset-4 hover:underline; }
-  code,kbd,pre { @apply font-mono; }
+  body { @apply bg-white text-black; font-family: var(--font-sans); }
+  h1 { @apply text-3xl font-bold; }
+  h2 { @apply text-2xl font-semibold; }
+  h3 { @apply text-xl font-semibold; }
+  a { @apply underline underline-offset-4; }
 }
 
+/* ===== Composants réutilisables ===== */
 @layer components {
-  .btn { @apply inline-flex items-center justify-center gap-2 rounded-2xl px-4 py-2 font-medium leading-none outline-none transition focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed; border-radius: var(--radius); }
-  .btn-sm { @apply px-3 py-1.5 text-sm rounded-xl; }
-  .btn-lg { @apply px-5 py-3 text-base rounded-2xl; }
-  .btn-primary   { @apply bg-brand-600 text-white hover:bg-brand-700 focus-visible:ring-brand-600; }
-  .btn-secondary { @apply bg-muted-200 text-muted-900 hover:bg-muted-300 dark:bg-muted-800 dark:text-muted-50 dark:hover:bg-muted-700; }
-  .btn-ghost     { @apply bg-transparent hover:bg-muted-100 dark:hover:bg-muted-800 text-current; }
-  .btn-outline   { @apply border border-muted-300 text-muted-900 hover:bg-muted-100 dark:border-muted-700 dark:text-muted-50 dark:hover:bg-muted-800; }
-  .btn-link      { @apply p-0 h-auto text-brand-700 hover:text-brand-800 underline underline-offset-4; }
+  .container-app { @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8; }
 
-  .card { @apply rounded-2xl border border-muted-200 bg-white text-muted-900 shadow-sm dark:bg-muted-900 dark:text-muted-50 dark:border-muted-800; border-radius: var(--radius); }
-  .card-body { @apply p-4; }
-  .card-header { @apply p-4 border-b border-muted-200 dark:border-muted-800; }
-  .card-footer { @apply p-4 border-t border-muted-200 dark:border-muted-800; }
+  .btn { @apply inline-flex items-center gap-2 rounded-2xl px-4 py-2 font-medium transition;
+         @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2; }
+  .btn-primary   { @apply bg-brand-600 text-white hover:bg-brand-700; }
+  .btn-secondary { @apply bg-muted-200 text-black hover:bg-muted-300; }
+  .btn-outline   { @apply border border-muted-300 hover:bg-muted-100; }
+  .btn-ghost     { @apply hover:bg-muted-100; }
+  .btn-link      { @apply p-0 h-auto text-brand-700 hover:text-brand-700/80 underline; }
+  .btn-sm        { @apply px-3 py-1.5 text-sm; }
+  .btn-lg        { @apply px-5 py-3 text-base; }
 
-  .badge { @apply inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium border-muted-200 text-muted-800 bg-muted-100 dark:bg-muted-800 dark:text-muted-100 dark:border-muted-700; }
+  .card { @apply rounded-2xl border border-muted-200 bg-white shadow-sm; }
+  .card-header, .card-body, .card-footer { @apply p-4; }
+  .card-header { @apply border-b border-muted-200; }
+  .card-footer { @apply border-t border-muted-200; }
+
+  .badge { @apply inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium; }
   .badge-primary { @apply border-transparent bg-brand-600 text-white; }
-  .badge-success { @apply border-transparent bg-success text-white; }
-  .badge-warning { @apply border-transparent bg-warning text-white; }
-  .badge-danger  { @apply border-transparent bg-danger  text-white; }
 
-  .label { @apply mb-1 block text-sm font-medium text-muted-700 dark:text-muted-200; }
-  .helper-text { @apply mt-1 text-xs text-muted-500; }
+  .label { @apply mb-1 block text-sm font-medium text-black; }
+  .helper-text { @apply mt-1 text-xs text-black/60; }
   .error-text  { @apply mt-1 text-xs text-danger; }
 
-  .input, .textarea, .select { @apply w-full rounded-xl border border-muted-300 bg-white text-sm text-muted-900 outline-none transition placeholder:text-muted-400 focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:border-brand-600 dark:bg-muted-900 dark:text-muted-50 dark:border-muted-700; border-radius: calc(var(--radius) - 0.25rem); }
+  .input, .textarea, .select {
+    @apply w-full rounded-xl border border-muted-300 bg-white text-sm text-black
+           placeholder:text-black/40 focus-visible:ring-2 focus-visible:ring-brand-600;
+  }
   .input-sm { @apply h-9 px-3; }
   .input-md { @apply h-10 px-3; }
   .input-lg { @apply h-12 px-4 text-base; }
-  .textarea { @apply min-h-[7rem] px-3 py-2; }
-  .select { @apply h-10 px-3 pr-8 bg-no-repeat bg-right; }
-
-  .input-invalid, .textarea-invalid, .select-invalid { @apply border-danger focus-visible:ring-danger; }
-
-  .container-app { @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8; }
 }
 
+/* ===== Icônes (seront INLINÉES en data: par postcss-url) ===== */
 @layer utilities {
-  .icon { display:inline-block; inline-size:1em; block-size:1em; vertical-align:-0.125em; background-color:currentColor; -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat; -webkit-mask-position:center; mask-position:center; -webkit-mask-size:contain; mask-size:contain; }
-  .icon-home   { -webkit-mask-image: url("./assets/icons/home.svg");   mask-image: url("./assets/icons/home.svg"); }
-  .icon-search { -webkit-mask-image: url("./assets/icons/search.svg"); mask-image: url("./assets/icons/search.svg"); }
+  .icon {
+    display:inline-block; inline-size:1em; block-size:1em;
+    background: currentColor; vertical-align: -0.125em;
+    -webkit-mask: center/contain no-repeat; mask: center/contain no-repeat;
+  }
+  .icon-home   { -webkit-mask-image:url("./assets/icons/home.svg");   mask-image:url("./assets/icons/home.svg"); }
+  .icon-search { -webkit-mask-image:url("./assets/icons/search.svg"); mask-image:url("./assets/icons/search.svg"); }
 
-  .skeleton { @apply animate-pulse bg-muted-200 dark:bg-muted-800 rounded-md; }
-  .shadow-card { @apply shadow-sm; }
-  .shadow-pop { @apply shadow-md; }
-  .shadow-strong { @apply shadow-lg; }
-
-  @keyframes fade-in { from{opacity:0} to{opacity:1} }
-  @keyframes slide-up { from{transform:translateY(6px);opacity:0} to{transform:translateY(0);opacity:1} }
-  @keyframes accordion-down { from{height:0} to{height:var(--radix-accordion-content-height)} }
-  @keyframes accordion-up { from{height:var(--radix-accordion-content-height)} to{height:0} }
-
-  .animate-in { animation: fade-in .2s ease-out both; }
-  .slide-in-up { animation: slide-up .22s ease-out both; }
-  .accordion-down { animation: accordion-down .2s ease-out; overflow:hidden; }
-  .accordion-up { animation: accordion-up .2s ease-out; overflow:hidden; }
+  .skeleton { @apply animate-pulse bg-muted-100 rounded-md; }
 }
-
-.dark .btn-secondary { @apply bg-muted-800 text-muted-50 hover:bg-muted-700; }
