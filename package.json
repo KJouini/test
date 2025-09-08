@@ -1,25 +1,30 @@
 {
   "name": "rollup-tailwind-test",
-  "version": "1.1.25",
-  "description": "Librairie de composants React avec Tailwind CSS v4, Rollup",
+  "version": "1.1.26",
   "type": "module",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
-  "types": "dist/index.d.ts",
-  "style": "dist/styles.css",
-  "files": [
-    "dist"
-  ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.esm.js",
+      "require": "./dist/index.cjs.js"
+    },
+    "./dist/styles.css": "./dist/styles.css"
+  },
   "sideEffects": [
-    "**/*.css"
+    "dist/styles.css"
+  ],
+  "files": [
+    "dist",
+    "dist/assets"
   ],
   "scripts": {
+    "clean": "rimraf dist src/styles/dist || true",
     "build": "rollup -c",
-    "clean": "rimraf dist src/styles/dist",
     "prepack": "npm run clean && npm run build"
   },
   "peerDependencies": {
-    "react": ">=18",
+    "react": ">=17",
     "react-dom": ">=18"
   },
   "devDependencies": {
@@ -30,7 +35,6 @@
     "autoprefixer": "^10",
     "esbuild": "^0.21",
     "postcss-url": "^10",
-    "rimraf": "^6.0.1",
     "rollup": "^4",
     "rollup-plugin-copy": "^3.5.0",
     "rollup-plugin-delete": "^2",
@@ -40,5 +44,6 @@
   "license": "MIT",
   "publishConfig": {
     "access": "public"
+
   }
 }
